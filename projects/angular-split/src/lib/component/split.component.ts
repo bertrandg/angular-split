@@ -30,6 +30,7 @@ import {
   isUserSizesValid,
   pointDeltaEquals,
   updateAreaSize,
+  getAreaSize,
 } from '../utils'
 
 /**
@@ -369,7 +370,7 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     if (resetSizes === true) {
       const useUserSizes = isUserSizesValid(
         this.unit,
-        this.displayedAreas.map((a) => a.component.size),
+        this.displayedAreas.map((a) => getAreaSize(a.component.size)),
       )
 
       switch (this.unit) {
@@ -529,10 +530,11 @@ export class SplitComponent implements AfterViewInit, OnDestroy {
     }
 
     this.displayedAreas.forEach((area) => {
+      const size = getAreaSize(area.size)
       const areaSnapshot: IAreaSnapshot = {
         area,
         sizePixelAtStart: getElementPixelSize(area.component.elRef, this.direction),
-        sizePercentAtStart: this.unit === 'percent' ? area.size : -1, // If pixel mode, anyway, will not be used.
+        sizePercentAtStart: this.unit === 'percent' ? size : -1, // If pixel mode, anyway, will not be used.
       }
 
       if (area.order < gutterOrder) {
